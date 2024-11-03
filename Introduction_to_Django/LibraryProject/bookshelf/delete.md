@@ -5,7 +5,9 @@ This document outlines the Delete operation performed on the Book model in the D
 ## Delete Operation
 
 ```python
-# Delete a book
-book = Book.objects.get(title="1984")
-book.delete()
+from bookshelf.models import Book
+
+# Delete a book entry
+book = Book.objects.get(title="Nineteen Eighty-Four")  # Retrieve the book to delete
+book.delete()                                          # Delete the book
 
