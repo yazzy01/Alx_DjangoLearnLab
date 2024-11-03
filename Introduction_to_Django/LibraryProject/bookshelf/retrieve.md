@@ -4,8 +4,10 @@ This document outlines the Retrieve operation performed on the Book model in the
 
 ## Retrieve Operation
 
+### Retrieve All Books
 ```python
 # Retrieve all books
 books = Book.objects.all()
-books  # Output the list of books
+for book in books:
+    print(book.title, book.author, book.publication_year)  # Output the list of books
 
