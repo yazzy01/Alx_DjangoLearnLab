@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import Author, Book, Library, Librarian
+from .models import Library
+from .models import Author, Book, Librarian
 from django.views.generic.detail import DetailView
-
 
 # Existing views
 def author_list(request):

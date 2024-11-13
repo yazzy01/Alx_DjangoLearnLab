@@ -1,10 +1,11 @@
-# relationship_app/urls.py
-
 from django.urls import path
-from . import views
+from .views import LibraryDetailView, list_books  # Ensure both views are imported
 
 urlpatterns = [
-    path('books/', views.list_books, name='list_books'),  # Function-based view
-    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),  # Class-based view with pk for Library ID
+    # URL for class-based view to show library details
+    path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
+
+    # URL for function-based view to list books
+    path('books/', list_books, name='list_books'),
 ]
 
