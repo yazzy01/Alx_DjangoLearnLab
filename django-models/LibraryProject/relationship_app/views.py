@@ -35,4 +35,31 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['books'] = self.object.books.all()  # This assumes you have a related field 'books' on Library
         return context
+ 
+
+
+
+# Import necessary modules
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+
+# Login View
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+
+# Logout View
+class CustomLogoutView(LogoutView):
+    template_name = 'logout.html'
+
+# Registration View
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
