@@ -22,7 +22,7 @@ def librarian_list(request):
 # New views
 def list_books(request):
     books = Book.objects.all()  # Retrieve all book records
-    return render(request, 'list_books.html', {'books': books})  # Pass the books to the template
+    return render(request, 'relationship_app/list_books.html', {'books': books})  # Pass the books to the template
 
 class LibraryDetailView(DetailView):
     model = Library
