@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import LibraryDetailView, list_books  # Ensure both views are imported
+from .views import list_books
+from .views import LibraryDetailView  # Ensure both views are imported
 
 urlpatterns = [
     # URL for class-based view to show library details
