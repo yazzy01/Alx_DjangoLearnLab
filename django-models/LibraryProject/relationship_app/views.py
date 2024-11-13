@@ -1,8 +1,10 @@
+# Imports for function-based views
 from django.shortcuts import render
 from .models import Author, Book, Library, Librarian
-from django.views.generic.detail import DetailView
+# Import for class-based view
+from django.views.generic import DetailView
 
-# Existing views
+# Existing function-based views
 def author_list(request):
     authors = Author.objects.all()
     return render(request, 'author_list.html', {'authors': authors})
@@ -19,13 +21,20 @@ def librarian_list(request):
     librarians = Librarian.objects.all()
     return render(request, 'librarian_list.html', {'librarians': librarians})
 
-# New views
+# New function-based view for listing books
 def list_books(request):
     books = Book.objects.all()  # Retrieve all book records
     return render(request, 'relationship_app/list_books.html', {'books': books})  # Pass the books to the template
 
+# New class-based view for library detail
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = 'library_detail.html'
+    template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Assuming the Library model has a related field 'books' for its books
+        context['books'] = self.object.books.all()  # Update if the related name is different
+        return context
 
