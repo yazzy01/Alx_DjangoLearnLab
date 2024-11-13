@@ -1,7 +1,5 @@
-# Imports for function-based views
 from django.shortcuts import render
-from .models import Author, Book, Library, Librarian
-# Import for class-based view
+from .models import Author, Book, Library, Librarian  # Ensure Library is imported
 from django.views.generic import DetailView
 
 # Existing function-based views
