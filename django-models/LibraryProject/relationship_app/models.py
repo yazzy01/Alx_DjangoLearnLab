@@ -65,3 +65,25 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
 
+
+
+# models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+    published_date = models.DateField()
+    # Add other fields as needed
+
+    class Meta:
+        permissions = [
+            ("can_add_book", "Can add book"),
+            ("can_change_book", "Can change book"),
+            ("can_delete_book", "Can delete book"),
+        ]
+
+    def __str__(self):
+        return self.title
+
