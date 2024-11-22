@@ -182,9 +182,13 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # In settings.py
 SECURE_BROWSER_XSS_FILTER = True
 
+# Enforce HTTPS in production, particularly when behind a proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # SECURE_SSL_REDIRECT ensures that all HTTP requests are redirected to HTTPS.
 SECURE_SSL_REDIRECT = True
 
 # SECURE_HSTS_SECONDS specifies how long browsers should only access the site via HTTPS (1 year).
 SECURE_HSTS_SECONDS = 31536000
+
 
