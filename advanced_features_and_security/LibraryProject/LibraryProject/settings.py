@@ -144,3 +144,13 @@ SESSION_COOKIE_SECURE = True  # Send session cookies over HTTPS only
 # Recommended: Define an ALLOWED_HOSTS list for production
 ALLOWED_HOSTS = ['your-production-domain.com']  # Replace with actual domain
 
+
+
+MIDDLEWARE += [
+    'csp.middleware.CSPMiddleware',
+]
+
+CSP_DEFAULT_SRC = ["'self'"]
+CSP_SCRIPT_SRC = ["'self'", 'https://trusted-scripts.com']
+CSP_STYLE_SRC = ["'self'", 'https://trusted-styles.com']
+
