@@ -154,3 +154,37 @@ CSP_DEFAULT_SRC = ["'self'"]
 CSP_SCRIPT_SRC = ["'self'", 'https://trusted-scripts.com']
 CSP_STYLE_SRC = ["'self'", 'https://trusted-styles.com']
 
+
+# In settings.py
+SECURE_SSL_REDIRECT = True
+
+# In settings.py
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+
+# In settings.py
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# In settings.py
+SECURE_HSTS_PRELOAD = True
+
+# In settings.py
+SESSION_COOKIE_SECURE = True
+
+# In settings.py
+CSRF_COOKIE_SECURE = True
+
+# In settings.py
+X_FRAME_OPTIONS = 'DENY'
+
+# In settings.py
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# In settings.py
+SECURE_BROWSER_XSS_FILTER = True
+
+# SECURE_SSL_REDIRECT ensures that all HTTP requests are redirected to HTTPS.
+SECURE_SSL_REDIRECT = True
+
+# SECURE_HSTS_SECONDS specifies how long browsers should only access the site via HTTPS (1 year).
+SECURE_HSTS_SECONDS = 31536000
+
