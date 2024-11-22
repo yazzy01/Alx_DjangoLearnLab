@@ -39,3 +39,11 @@ def add_book(request):
         form = BookForm()
     return render(request, 'add_book.html', {'form': form})
 
+
+from django.shortcuts import render
+from .forms import ExampleForm
+
+def example_view(request):
+    form = ExampleForm()
+    return render(request, "bookshelf/form_example.html", {"form": form})
+
