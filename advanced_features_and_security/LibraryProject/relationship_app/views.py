@@ -143,3 +143,16 @@ def delete_book(request, pk):
         return redirect('book_list')
     return render(request, 'relationship_app/delete_book.html', {'book': book})
 
+
+from django.shortcuts import render
+from .forms import ExampleForm
+
+def example_view(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process form data
+            pass
+    else:
+        form = ExampleForm()
+    return render(request, "relationship_app/form_example.html", {"form": form})
