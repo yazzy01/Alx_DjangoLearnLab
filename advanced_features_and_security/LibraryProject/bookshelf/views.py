@@ -13,3 +13,14 @@ def edit_book(request, book_id):
     # Update book details logic
     return render(request, 'edit_book.html', {'book': book})
 
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import permission_required
+from .models import Book
+
+@permission_required('books.can_view', raise_exception=True)
+def book_list(request):
+    books = Book.objects.all()  # Retrieve all books
+    return render(request, 'book_list.html', {'books': books})
+
