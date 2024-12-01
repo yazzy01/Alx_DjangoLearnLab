@@ -24,3 +24,12 @@ urlpatterns = [
     path('books/delete/<int:pk>/', BookDeleteView.as_view(), name='book-delete'),  # Delete a book
 ]
 
+
+from rest_framework.routers import DefaultRouter
+from .views import BookListView
+
+router = DefaultRouter()
+router.register(r'books', BookListView)
+
+urlpatterns = router.urls
+
