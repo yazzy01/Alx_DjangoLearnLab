@@ -1,10 +1,10 @@
+from rest_framework import filters
 from rest_framework.filters import SearchFilter
 import filters from rest_framework
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters import rest_framework as filters
 from django_filters import rest_framework
 import django_filters
-from rest_framework import filters
 from rest_framework import generics, permissions, serializers
 from .models import Book
 from .serializers import BookSerializer
@@ -91,7 +91,7 @@ class BookFilter(django_filters.FilterSet):
 class BookListView(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = (filters.OrderingFilter, DjangoFilterBackend, SearchFilter)
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter]
     filterset_class = BookFilter
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']  # Default ordering by title
