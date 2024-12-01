@@ -1,3 +1,5 @@
+
+import django_filters
 from rest_framework import generics, permissions, serializers
 from .models import Book
 from .serializers import BookSerializer
@@ -66,6 +68,31 @@ class BookDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
+from rest_framework import viewsets
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+from api.models import Book
+from api.serializers import BookSerializer
+
+class BookFilter(django_filters.FilterSet):
+    title = django_filters.CharFilter(lookup_expr='icontains')  # Case-insensitive partial match
+    author = django_filters.CharFilter(lookup_expr='icontains')  # Case-insensitive partial match
+    publication_year = django_filters.NumberFilter(lookup_expr='exact')
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
+
+class BookListView(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = (filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend)
+    filterset_class = BookFilter
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']  # Default ordering by title
+    search_fields = ['title', 'author']  # Fields that can be searched
+
+
 """
 This module defines generic views for managing the Book model.
 
@@ -81,4 +108,24 @@ URLs:
 - /books/ -> List all books or create a new book.
 - /books/<int:pk>/ -> Retrieve, update, or delete a book.
 """
+
+
+# In api/views.py
+
+class BookListView(viewsets.ModelViewSet):
+    """
+    List all books, or create a new book.
+    You can filter, search, and order the books.
+    
+    Filter Options:
+        - title: Filter by book title.
+        - author: Filter by book author.
+        - publication_year: Filter by the publication year.
+    
+    Search:
+        - search by title or author.
+    
+    Ordering:
+        - order by title or publication_year.
+    """
 
