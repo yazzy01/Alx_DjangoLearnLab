@@ -1,4 +1,5 @@
-
+from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters import rest_framework as filters
 from django_filters import rest_framework
 import django_filters
@@ -89,7 +90,7 @@ class BookFilter(django_filters.FilterSet):
 class BookListView(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = (filters.OrderingFilter, django_filters.rest_framework.DjangoFilterBackend)
+    filter_backends = (filters.OrderingFilter, DjangoFilterBackend, SearchFilter)
     filterset_class = BookFilter
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']  # Default ordering by title
