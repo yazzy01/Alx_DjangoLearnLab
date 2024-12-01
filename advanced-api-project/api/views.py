@@ -1,4 +1,5 @@
 from rest_framework.filters import SearchFilter
+import filters from rest_framework
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters import rest_framework as filters
 from django_filters import rest_framework
