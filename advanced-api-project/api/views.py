@@ -1,5 +1,5 @@
 
-
+from django_filters import rest_framework as filters
 from django_filters import rest_framework
 import django_filters
 from rest_framework import filters
