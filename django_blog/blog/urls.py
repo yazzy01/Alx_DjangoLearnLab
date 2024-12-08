@@ -1,3 +1,4 @@
+from .views import CommentCreateView
 
 from django.urls import path
 from .views import CommentCreateView, CommentUpdateView, CommentDeleteView
