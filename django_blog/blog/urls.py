@@ -28,8 +28,10 @@ urlpatterns = [
     
     # Delete a post
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),  # Correct URL for deleting posts
+    path('post/<int:pk>/', views.post_detail, name='post-detail'),
+    path('post/<int:post_id>/comments/<int:pk>/edit/', views.CommentUpdateView.as_view(), name='comment-edit'),
+    path('post/<int:post_id>/comments/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment-delete'),
 ]
-
 
 
 
