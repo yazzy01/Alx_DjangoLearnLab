@@ -126,3 +126,25 @@ class CommentCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['post_id']})
 
+
+from django.shortcuts import render, get_object_or_404
+from django.views.generic.edit import CreateView
+from .models import Comment, Post
+from django.urls import reverse_lazy
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['content']  # assuming your Comment model has a content field for the comment text
+    template_name = 'blog/comment_form.html'  # Specify your template for creating a comment
+
+    def form_valid(self, form):
+        # Set the post for the comment from the URL
+        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        form.instance.post = post
+        form.instance.author = self.request.user  # Assuming you want to automatically assign the current user as the author
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect back to the post detail page after successful comment creation
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
+
