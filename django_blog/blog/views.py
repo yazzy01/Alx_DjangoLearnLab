@@ -167,3 +167,24 @@ class CommentCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['pk']})
 
+
+from django.db.models import Q
+from .models import Post
+from django.shortcuts import render
+
+def search_posts(request):
+    query = request.GET.get('q')
+    results = Post.objects.filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(tags__name__icontains=query)
+    ).distinct()
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+
+
+from taggit.models import Tag
+
+def tagged_posts(request, tag):
+    posts = Post.objects.filter(tags__name=tag)
+    return render(request, 'blog/tagged_posts.html', {'tag': tag, 'posts': posts})
+

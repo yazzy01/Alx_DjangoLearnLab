@@ -38,3 +38,10 @@
     <p>You must be logged in to leave a comment.</p>
 {% endif %}
 
+
+<p>Tags:
+    {% for tag in post.tags.all %}
+        <a href="{% url 'tagged_posts' tag.name %}">{{ tag.name }}</a>
+    {% endfor %}
+</p>
+

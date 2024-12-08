@@ -1,0 +1,7 @@
+<h1>Posts Tagged "{{ tag }}"</h1>
+{% for post in posts %}
+    <h2><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+{% empty %}
+    <p>No posts with this tag.</p>
+{% endfor %}
+
