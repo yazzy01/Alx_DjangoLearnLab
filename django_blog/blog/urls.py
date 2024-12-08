@@ -1,5 +1,6 @@
 
 from django.urls import path
+from .views import CommentCreateView
 from django.contrib.auth import views as auth_views
 from . import views
 from .views import (
@@ -31,6 +32,7 @@ urlpatterns = [
     path('post/<int:pk>/', views.post_detail, name='post-detail'),
     path('post/<int:post_id>/comments/<int:pk>/edit/', views.CommentUpdateView.as_view(), name='comment-edit'),
     path('post/<int:post_id>/comments/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment-delete'),
+    path('posts/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment_create'),
 ]
 
 

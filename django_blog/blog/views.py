@@ -1,3 +1,7 @@
+from django.shortcuts import get_object_or_404
+from django.views.generic.edit import CreateView
+from .models import Comment, Post
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -106,4 +110,19 @@ class CommentDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['content']
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        form.instance.author = self.request.user
+        form.instance.post = post
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['post_id']})
 
