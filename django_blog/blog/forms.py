@@ -13,12 +13,14 @@ class CustomUserCreationForm(UserCreationForm):
 
 from django import forms
 from .models import Post
+from taggit.forms import TagWidget  # Import the TagWidget
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']  # Include 'tags' field
-
+        
+    tags = forms.CharField(widget=TagWidget(), required=False)  # Add the TagWidget to the 'tags' field
 
 
 from django import forms
