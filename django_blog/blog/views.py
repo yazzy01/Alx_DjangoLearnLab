@@ -148,3 +148,22 @@ class CommentCreateView(CreateView):
         # Redirect back to the post detail page after successful comment creation
         return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
 
+
+
+from django.views.generic import CreateView
+from .models import Comment
+from django.urls import reverse_lazy
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['content']
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        form.instance.post_id = self.kwargs['pk']
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['pk']})
+
