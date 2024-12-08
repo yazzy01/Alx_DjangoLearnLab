@@ -188,3 +188,19 @@ def tagged_posts(request, tag):
     posts = Post.objects.filter(tags__name=tag)
     return render(request, 'blog/tagged_posts.html', {'tag': tag, 'posts': posts})
 
+
+from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Post
+from taggit.models import Tag
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list_by_tag.html'  # Adjust template path if needed
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs['tag_slug']
+        tag = Tag.objects.get(slug=tag_slug)
+        return Post.objects.filter(tags=tag)
+
