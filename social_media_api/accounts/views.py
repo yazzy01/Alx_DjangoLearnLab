@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions  # Add this explicit import
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
@@ -26,7 +26,7 @@ class LoginView(ObtainAuthToken):
         })
 
 class FollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Changed to use permissions.IsAuthenticated
     serializer_class = UserFollowSerializer
 
     def post(self, request, user_id):
@@ -49,7 +49,7 @@ class FollowUserView(generics.GenericAPIView):
             )
 
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Changed to use permissions.IsAuthenticated
     serializer_class = UserFollowSerializer
 
     def post(self, request, user_id):
@@ -74,7 +74,7 @@ class UnfollowUserView(generics.GenericAPIView):
 class UserViewSet(ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserFollowSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Changed to use permissions.IsAuthenticated
 
     @action(detail=True, methods=['POST'])
     def follow(self, request, pk=None):
