@@ -1,33 +1,52 @@
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from rest_framework.validators import UniqueValidator
 
-# Get the custom user model
-User = get_user_model()
+class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        validators=[validate_password]
+    )
+    password2 = serializers.CharField(
+        write_only=True,
+        required=True
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name')
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'last_name': {'required': True}
+        }
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        return attrs
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers']
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
-class RegisterSerializer(serializers.ModelSerializer):
-    # Explicitly define fields with serializers.CharField
-    username = serializers.CharField(max_length=150)
-    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
-    email = serializers.EmailField()
-
-    class Meta:
-        model = User
-        fields = ['username', 'password', 'email']
-
-    def create(self, validated_data):
-        # Use get_user_model().objects.create_user for user creation
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
-        # Automatically create an auth token for the new user
-        Token.objects.create(user=user)
-        return user
-
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
