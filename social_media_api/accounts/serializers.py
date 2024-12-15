@@ -21,3 +21,12 @@ class RegisterSerializer(serializers.Serializer):  # Use `Serializer` instead of
         Token.objects.create(user=user)
         return user
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email')
+        read_only_fields = ('id',)
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
