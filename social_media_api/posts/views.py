@@ -1,3 +1,7 @@
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .models import Like
+from notifications.models import Notification
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, filters, permissions
@@ -26,6 +30,43 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+@action(detail=True, methods=['POST'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+        
+        if Like.objects.filter(user=user, post=post).exists():
+            return Response(
+                {'error': 'You have already liked this post'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        Like.objects.create(user=user, post=post)
+        
+        # Create notification
+        Notification.objects.create(
+            recipient=post.author,
+            actor=user,
+            verb='liked your post',
+            target=post
+        )
+        
+        return Response({'status': 'post liked'})
+
+    @action(detail=True, methods=['POST'])
+    def unlike(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+        like = Like.objects.filter(user=user, post=post).first()
+        
+        if like:
+            like.delete()
+            return Response({'status': 'post unliked'})
+        return Response(
+            {'error': 'You have not liked this post'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
